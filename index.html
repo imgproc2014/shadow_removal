@@ -1,79 +1,138 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Shadow removal : " />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Shadow removal</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/imgproc2014/shadow_removal">View on GitHub</a>
-
-          <h1 id="project_title">Shadow removal</h1>
-          <h2 id="project_tagline"></h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/imgproc2014/shadow_removal/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/imgproc2014/shadow_removal/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+  <!-- see: http://www.codecogs.com/latex/integration/htmlequations.php -->
+  <script type="text/javascript" src="http://latex.codecogs.com/latexit.js"></script>
+  <script type="text/javascript">
+	LatexIT.add('p',true);
+  </script>
+  <title>Shadow removal from faces</title>
+</head>
+<body>
+  <div class="vspace"></div>
+  <div id="all">
+    <div id="header">
+      <h1>Shadow removal from faces</h1>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+    <hr/>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
+    <div id="authors">
+      <p>
+		Noam Hirshberg<br/>
+		Maroun Sassine
+	  <p>
     </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Shadow removal maintained by <a href="https://github.com/imgproc2014">imgproc2014</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
+	<h2>Project abstract</h2>
+	<p>
+	  The goal of this project is performing shadow removal from
+	  images of faces. Faces are often a key feature in pictures, but
+	  sometimes, bad lighting in the scene with possible combination
+	  of non-optimal camera settings, can cause faces to look too
+	  dark and covered with shadows.
+	</p>
+	<p>
+	  To achive our goal of removing shadow, Our method uses multiple
+	  images of the person in good lighting conditions to fix an image
+	  with shadows. The following describes the ideas and methods
+	  implemented.
+	</p>
 
-    
+	<h2>Introduction: intrinsic images</h2>
+	<p>
+	  Intrinsic images are a useful midlevel description of scenes
+	  proposed by Barrow and Tenenbaum.
+	</p>
+	<p>
+	  The intrinsics of an image are composed of two parts:
+	  reflectance, and illumination. These are defined such that
+	  multiplying the reflectance with the illumination, we get the
+	  original image, as illustrated here:
+	</p>
+	<img src="images/intrinsic.gif" border="1" width="600px">
+	<p>
+	  To remove the multiplication, we work with the log domain.
+	</p>
+	<img src="http://latex.codecogs.com/svg.latex?i(x,y,t)=r(x,y)+l(x,y,t)" border="0"/>
 
-  </body>
+
+	<h2>Finding the intrinsics of an image</h2>
+	<p>
+	  Deriving intrinsic images from image sequences <i>Yair Wiess</i>:
+
+	  given a sequence of images as input, we solve this equation:
+	  $I(x,y,t)=R(x,y)L(x,y,t)$ and find $R(x,y)$, where $R(x,y)$ is
+	  constant in all images.
+	</p>
+	
+	<p>How does it work?</p>
+	<ul>
+	  <li>We take 2 derivative filters, horizental and vertical.</li>
+	  <li>Convolve every derivative filter with every image in the sequence.</li>
+	  <li>Now we take all horizental derivative images and implement an image by median of all of them.</li>
+	  <li>We do the same for the vertical derivative images.</li>
+	  <li>Now we have 2 images.</li>
+	</ul>
+
+	<img src="images/median.gif">
+
+	<p>Illustration As shown in Yair's article:</p>
+
+	<img src="images/Mlmodel.png" border="1" width="600px">
+
+	<p>Note that all images must be aligned.</p>
+
+	<p>
+	  Now we need to transform back to the original image and find 'r'.
+	  To do so we solve the linear equations:
+	</p>
+	<img src="images/solveequation.gif">.
+
+	<p>
+	  Solution is given by these equations:
+	</p>
+	<img src="images/Sigma(6).gif">
+	<br/>
+	<img src="images/sigma(7).gif">
+	<h2>Warping faces</h2>
+	<p>
+	  The above algorithm assumes that the images are aligned. To use
+	  it we need to first warp the faces to be aligned as closly as
+	  possible to the face which we want to fix.
+	</p>
+	<h2>Results</h2>
+	<p>Example source images:</p>
+	<img src="images/maroun_source/20140706_153321.jpg" border="1">
+	<img src="images/maroun_source/20140706_153323.jpg" border="1">
+	<img src="images/maroun_source/20140706_153324.jpg" border="1">
+	<img src="images/maroun_source/20140706_153405.jpg" border="1">
+
+	<p>Results:</p>
+	<figure>
+	  <img src="images/maroun_reflectance.jpg" border="1">
+	  <figcaption>Reflectance image.</figcaption>
+	</figure> 
+	<br/>
+	<figure>
+	  <img src="images/maroun_not_aligned.jpg" border="1">
+	  <figcaption>Without the face warpping - we can see that we don't get any meaningful results.</figcaption>
+	</figure> 
+	<h2>Source code</h2>
+	<p>
+	  <a href="project_final.zip">Soure code with test images</a>
+	  <br/>
+	  <a href="source_only.zip">Soure code only</a>
+	</p>
+	<p>
+	  Run <code>script.m</code>. To choose a different folder for source
+	  images change the
+	  <code>image_prefix</code> variable.
+	</p>
+  </div><!-- id="all" -->
+  <div class="vspace"></div>
+</body>
 </html>
+

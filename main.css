@@ -1,0 +1,37 @@
+
+html {
+    height: 100%;
+}
+
+body {
+    padding: 0px;
+    margin: 0px;
+    min-height: 100%;
+    auto;
+    //font-family: Verdana, Geneva, sans-serif;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    background-color: #112555;
+}
+
+div.vspace {
+	height: 3em;
+}
+
+#all {
+    position: relative;
+    padding: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 40em;
+    height: 100%;
+    min-height: 100%;
+    background-color: #fdfdfd;
+    border-radius: 25px;
+}
+
+#header {
+    text-align: center;
+}
+
+pre .latex { border: 3px solid red; }
